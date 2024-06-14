@@ -1,4 +1,5 @@
 const { createApplication, getAllApplications } = require("../controllers/applicationController");
+const { createJob, getJobDetails, getAllJobs } = require("../controllers/jobController");
 const { createLink, getLink } = require("../controllers/linkController");
 const { createUser, getUser } = require("../controllers/userController");
 
@@ -15,5 +16,10 @@ route.get('/getLink',getLink)
 //applicationRoutes
 route.post('/createApplication',createApplication)
 route.get('/getApplications',getAllApplications)
+
+//jobRoutes
+route.post('/createJobs',createJob)
+route.get('/getJobDetails',getJobDetails)
+route.get('/getAllJobs',getAllJobs)
 
 module.exports = route;

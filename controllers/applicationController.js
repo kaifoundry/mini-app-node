@@ -3,6 +3,7 @@ const { Applications } = require("../models/application")
 async function getAllApplications(req,res){
     try{
         const {jobID}=req.query
+        console.log(jobID)
 
         const applications=await Applications.findAll({where:{jobId:jobID}})
         console.log(applications)

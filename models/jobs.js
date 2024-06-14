@@ -4,6 +4,15 @@ const sequelize = require("../database"); // Ensure to configure the connection 
 const Jobs = sequelize.define("Job", {
     jobId:{
         type:DataTypes.TEXT
+    },
+    name:{
+        type:DataTypes.TEXT
+    },
+    des:{
+        type:DataTypes.TEXT
+    },
+    bounty:{
+        type:DataTypes.NUMBER
     }
 });
 module.exports = { Jobs };

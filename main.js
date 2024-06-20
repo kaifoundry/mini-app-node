@@ -8,10 +8,10 @@ const cors = require("cors");
 const sequelize = require("./database");
 const routes = require("./routes");
 _ = require("underscore");
-// const User= require('./models/user')
-// const applications=require('./models/application')
-// const jobs=require('./models/jobs')
-// const Link=require('./models/link')
+const User= require('./models/user')
+const applications=require('./models/application')
+const jobs=require('./models/jobs')
+const Link=require('./models/link')
 
 
 const app = express();

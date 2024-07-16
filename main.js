@@ -17,7 +17,7 @@ const Link=require('./models/link')
 const app = express();
 
 const corsOptions={
-  origin:["http://localhost:3002","https://bondex.kaifoundry.com"]
+  origin:["*"]
 }
 
 app.use(

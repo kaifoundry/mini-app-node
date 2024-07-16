@@ -16,13 +16,19 @@ const Link=require('./models/link')
 
 const app = express();
 
-const corsOptions={
-  origin:["*"]
-}
-
 app.use(
-  cors(corsOptions)
+  cors({
+    origin: "*",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
 );
+
+// app.use(
+//   cors(corsOptions)
+// );
 
 const PORT = process.env.PORT || 8000;
 

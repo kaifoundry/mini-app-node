@@ -10,6 +10,12 @@ const Links = sequelize.define("Link", {
     },
     link:{
         type:DataTypes.TEXT
+    },
+    ref:{
+        type:DataTypes.TEXT
+    },
+    isActive:{
+        type:DataTypes.BOOLEAN
     }
 });
 module.exports = { Links };

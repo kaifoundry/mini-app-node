@@ -13,6 +13,9 @@ const Applications = sequelize.define("Application", {
     },
     skills:{
         type:DataTypes.ARRAY(DataTypes.TEXT)
+    },
+    ref:{
+        type:DataTypes.TEXT
     }
 });
 module.exports = { Applications };

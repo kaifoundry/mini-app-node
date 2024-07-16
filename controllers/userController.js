@@ -16,7 +16,8 @@ async function createUser(req,res){
         await Users.create({
             walletId:user,
             name:name,
-            email:email
+            email:email,
+            isAdmin:false
         })
 
         return res.json({message:"User created successfully"})

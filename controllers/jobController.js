@@ -2,7 +2,7 @@ const { Jobs } = require("../models/jobs")
 
 async function createJob(req,res){
     try{
-        const {bounty,name,des}=req.body
+        const {bounty,title,company,jobDetail,logo,aboutCompany,candidateReq,jobReq,skills,tags}=req.body
 
         const jobs=await Jobs.findAll({})
 
@@ -11,8 +11,15 @@ async function createJob(req,res){
         await Jobs.create({
             jobId:jobId,
             bounty:bounty,
-            name:name,
-            des:des
+            title:title,
+            company:company,
+            jobDetail:jobDetail,
+            logo:logo,
+            aboutCompany:aboutCompany,
+            jobReq:jobReq,
+            candidateReq:candidateReq,
+            skills:skills,
+            tags:tags
         })
 
         return res.json({message:"Job created succesfully"})

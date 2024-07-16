@@ -17,6 +17,10 @@ const Users = sequelize.define("User", {
     skills:{
         type:DataTypes.ARRAY(DataTypes.TEXT),
         defaultValue:[]
+    },
+    isAdmin:{
+        type:DataTypes.BOOLEAN,
+        allowNull:false
     }
 });
 module.exports = { Users };

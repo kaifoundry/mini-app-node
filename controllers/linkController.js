@@ -2,11 +2,11 @@ const { Links } = require("../models/link")
 
 async function createLink(req,res){
     try{
-        const {generatedBy,jobId,link}=req.body
+        const {generatedBy,jobId,link,ref}=req.body
 
         console.log(req.body)
 
-        if(generatedBy==undefined || jobId==undefined || link==undefined){
+        if(ref==undefined || generatedBy==undefined || jobId==undefined || link==undefined){
             return res.json({message:"Do not send empty fields"})
         }
 
@@ -20,7 +20,9 @@ async function createLink(req,res){
         await Links.create({
             generatedBy:generatedBy,
             link:link,
-            jobId:jobId
+            ref:ref,
+            jobId:jobId,
+            isActive:true
         })
 
         return res.json({message:"Link created successfully"})
@@ -49,8 +51,27 @@ async function getLink(req,res){
         return res.json({message:"something went wrong"})
     }
 }
+async function getAllLinks(req,res){
+    try{
+        const {user,job}=req.query
+        console.log(user,job)
+
+        const links=await Links.findAll({where:{generatedBy:user,jobId:""+job}})
+
+        console.log(links,links?.length)
+        if(links!=null && links?.length>0){
+            return res.json({message:"links found",links:links})
+        }
+        return res.json({message:"no links found"})
+
+    }catch(err){
+        console.log(err)
+        return res.json({message:"something went wrong"})
+    }
+}
 
 module.exports={
     createLink,
-    getLink
+    getLink,
+    getAllLinks
 }

@@ -1,4 +1,5 @@
 const { Applications } = require("../models/application")
+const { Links } = require("../models/link")
 
 async function getAllApplications(req,res){
     try{
@@ -20,20 +21,33 @@ async function getAllApplications(req,res){
 
 async function createApplication(req,res){
     try{
-        const {jobId,candidate,skills}=req.body
+        const {candidate,skills,ref}=req.body
+        console.log(skills,candidate,ref)
 
-        if(jobId==undefined || candidate==undefined || skills==undefined ){
+        if(ref==undefined || candidate==undefined || skills==undefined ){
             return res.json({message:"Do not send empty fields"})
         }
     
         let rating = Math.floor(Math.random()*5)+1
+
+        let link=await Links.findOne({where:{ref:ref}})
+
+        if(link==null){
+            return res.json({message:"invalid referral"})
+        }
+        if(!link.isActive){
+            return res.json({message:"One referral is valid for only one user"})
+        }
     
         await Applications.create({
-            jobId:jobId,
+            jobId:link.jobId,
             candidate:candidate,
             skills:skills,
-            rating:rating
+            rating:rating,
+            ref:ref
         })
+        link.isActive=false
+        await link.save()
         return res.json({message:`Your application is received, you have received a rating of ${rating}`,rating:rating,success:true})
     }catch(err){
         console.log(err)

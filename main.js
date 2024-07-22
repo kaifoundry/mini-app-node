@@ -58,8 +58,28 @@ bot.on('message', (msg) => {
   // console.log(msg)
   const msgArr=msg.text.split(' ')
   switch(msgArr[0]){
-    case("/menu"):
-        bot.sendMessage(chatId, `Hi, thanks for showing your interest in this Job\n Please choose 'Continue' to proceed further`);
+    case("/instructions"):
+        bot.sendMessage(
+          chatId,
+          `
+            Instructions for using demo app : \n\n
+1. Connect your Ton wallet\n
+2. Signup as a user\n
+3. Select a job to generate referral\n
+4. Generate new Referral by depositing 10 Ton stars\n
+5. Share the link to a candidate\n
+6. Candidate will receive a rating after applying for the job\n
+7. Your deposit will merge into the pool if candidate gets rating 3 or less\n
+8. Deposit will be returned by the end of the week on rating greater than 3\n
+9. Top 10 users with maximum referred candidates having rating 3 or more will receive 10 extra ton stars by the end of the week\n
+          `
+        );
+        break
+    case("/info"):
+        bot.sendMessage(
+          chatId,
+          "From bondex bot : \n\nI am a bot that will guide you for using mini app, How can i help you now ?\n You can use my commands to provide instructions or launch the mini app"
+        );
         break
     case('/start'):
         if(msgArr.length>1){
@@ -73,7 +93,28 @@ bot.on('message', (msg) => {
             };
             bot.sendMessage(chatId,`Hi ${msg.chat.first_name}! This is the referral you came here with : ${msgArr[1]}`,options)
         }else{
-            bot.sendMessage(chatId,`Hi ${msg.chat.first_name}! How can I help you!`)
+            bot.sendPhoto(chatId,"https://www.google.com/imgres?q=bondex%20logo&imgurl=https%3A%2F%2Fwww.cryptotimes.io%2Fwp-content%2Fuploads%2F2024%2F06%2Fimage-1280x720-7-2.png&imgrefurl=https%3A%2F%2Fwww.cryptotimes.io%2F2024%2F06%2F19%2Fbondex-secures-over-10-million-for-web3-professional-network%2F&docid=qvc5_gnL2E1DjM&tbnid=LjkLIIUuyOJp1M&vet=12ahUKEwjXj-Tx8rmHAxUgXGwGHQRMC44QM3oECFIQAA..i&w=1280&h=720&hcb=2&ved=2ahUKEwjXj-Tx8rmHAxUgXGwGHQRMC44QM3oECFIQAA",
+              {
+                caption:
+                `
+                Hi ${msg.chat.first_name}!\n\nI am Bondex bot, You can use following commands to interact with me : \n\n
+/start : starts my conversation with you\n
+/instructions : Gives appropriate instructions to earn using mini app\n
+/info : Tells a bit about me.\n
+
+You can launch the mini app using the 'Jobs' button and start your journey! Do let me know if you need me 
+              `
+              })
+//             bot.sendMessage(chatId,
+//               `
+//                 Hi ${msg.chat.first_name}!\n\nI am Bondex bot, You can use following commands to interact with me : \n\n
+// /start : starts my conversation with you\n
+// /instructions : Gives appropriate instructions to earn using mini app\n
+// /info : Tells a bit about me.\n
+
+// You can launch the mini app using the 'Jobs' button and start your journey! Do let me know if you need me "/x1F604	
+//               `
+//             )
         }
         break
     default:

@@ -13,6 +13,22 @@ const applications=require('./models/application')
 const jobs=require('./models/jobs')
 const Link=require('./models/link')
 
+async function getJobsForBot(){
+  try{
+    let jobList=await jobs.Jobs.findAll({})
+    if(jobList?.length==0 || jobList==null){
+      return "Cannot find any jobs at the moment"
+    }
+    let jobText="Jobs currently available are displayed. You can find more about these jobs through the mini app \n\n"
+    for(let i=0;i<jobList?.length;i++){
+      let jobData=`${i+1}. ${jobList[i].title}\nCompany : ${jobList[i].company}\nAbout the job : ${jobList[i].jobDetail}\n\n`
+      jobText+=jobData
+    }
+    return jobText
+  }catch(err){
+    return "sorry something went wrong while fetching the jobs"
+  }
+}
 
 const app = express();
 
@@ -53,7 +69,7 @@ const token = '7339805053:AAHHlRS0imAHe8bB-b5oUxJUCnyiXTKm2HM';
 
 const bot = new TelegramBot(token, {polling: true});
 
-bot.on('message', (msg) => {
+bot.on('message', async(msg) => {
   const chatId = msg.chat.id;
   // console.log(msg)
   const msgArr=msg.text.split(' ')
@@ -81,6 +97,10 @@ bot.on('message', (msg) => {
           "From bondex bot : \n\nI am a bot that will guide you for using mini app, How can i help you now ?\n You can use my commands to provide instructions or launch the mini app"
         );
         break
+    case("/jobs"):
+        let message=await getJobsForBot()
+        bot.sendMessage(chatId,message)
+        break
     case('/start'):
         if(msgArr.length>1){
             var options = {
@@ -101,20 +121,11 @@ bot.on('message', (msg) => {
 /start : starts my conversation with you\n
 /instructions : Gives appropriate instructions to earn using mini app\n
 /info : Tells a bit about me.\n
+/jobs : I will provide you with all the jobs available at the moment
 
 You can launch the mini app using the 'Jobs' button and start your journey! Do let me know if you need me 
               `
               })
-//             bot.sendMessage(chatId,
-//               `
-//                 Hi ${msg.chat.first_name}!\n\nI am Bondex bot, You can use following commands to interact with me : \n\n
-// /start : starts my conversation with you\n
-// /instructions : Gives appropriate instructions to earn using mini app\n
-// /info : Tells a bit about me.\n
-
-// You can launch the mini app using the 'Jobs' button and start your journey! Do let me know if you need me "/x1F604	
-//               `
-//             )
         }
         break
     default:

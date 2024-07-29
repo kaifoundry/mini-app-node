@@ -18,6 +18,10 @@ const Users = sequelize.define("User", {
         type:DataTypes.ARRAY(DataTypes.TEXT),
         defaultValue:[]
     },
+    // profile:{
+    //     type:DataTypes.TEXT,
+    //     allowNull:true
+    // },
     isAdmin:{
         type:DataTypes.BOOLEAN,
         allowNull:false

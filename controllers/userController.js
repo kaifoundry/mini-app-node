@@ -28,6 +28,26 @@ async function createUser(req,res){
     }
 }
 
+// async function updateUser(req,res){
+//     try{
+//         const {wallet,name,email,img}=req.body
+//         console.log(wallet)
+//         const user=await Users.findOne({where:{walletId:wallet}})
+//         if(user==null){
+//             return res.json({message:"no user exists with this walletid"})
+//         }
+//         user.name=name
+//         user.email=email
+//         user.profile=img
+//         await user.save()
+//         return res.json({message:"profile updated",user:user})
+//     }catch(err){
+//         console.log(err)
+//         return res.json({message:"some err"})
+//     }
+// }
+
+
 async function getUser(req,res){
     try{
         const {wallet} = req.query
@@ -49,4 +69,5 @@ async function getUser(req,res){
 module.exports={
     createUser,
     getUser,
+    // updateUser
 }

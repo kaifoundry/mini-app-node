@@ -117,13 +117,19 @@ bot.on('message', async(msg) => {
               {
                 caption:
                 `
-                Hi ${msg.chat.first_name}!\n\nI am Bondex bot, You can use following commands to interact with me : \n\n
-/start : starts my conversation with you\n
-/instructions : Gives appropriate instructions to earn using mini app\n
-/info : Tells a bit about me.\n
-/jobs : I will provide you with all the jobs available at the moment
+👋 Hello ${msg.chat.first_name}!
 
-You can launch the mini app using the 'Jobs' button and start your journey! Do let me know if you need me 
+I'm Bondex Bot, your gateway to exciting job opportunities! 🌟 Here's how you can interact with me:
+
+- /start: Let's kick off our conversation and explore opportunities together! 🚀
+- /instructions: Learn how to earn rewards by using our mini app. 💰
+- /info: Discover what Bondex is all about. 📘
+- /jobs: Check out the latest job listings and find your perfect match! 🔍
+
+Hit the 'Jobs' button to launch the mini app and start your journey toward finding great candidates and earning bounties. 🏆
+
+Feel free to reach out if you need any assistance. Welcome aboard, and let's make great things happen together! 🎉
+
               `
               })
         }

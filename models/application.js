@@ -16,6 +16,9 @@ const Applications = sequelize.define("Application", {
     },
     ref:{
         type:DataTypes.TEXT
+    },
+    refBy:{
+        type:DataTypes.TEXT
     }
 });
 module.exports = { Applications };

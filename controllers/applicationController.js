@@ -1,18 +1,70 @@
 const { Applications } = require("../models/application")
+const { Jobs } = require("../models/jobs")
 const { Links } = require("../models/link")
+const { Users } = require("../models/user")
 
 async function getAllApplications(req,res){
     try{
         const {jobID}=req.query
-        console.log(jobID)
-
+        // console.log(wallet)
+        
         const applications=await Applications.findAll({where:{jobId:jobID}})
-        console.log(applications)
-        if(applications==null){
-            return res.json({message:"No applications found for this job"})
+        if(applications==null || !(applications?.length>0)){
+            return res.json({message:"no applications found"})
         }
-        return res.json({message:"applications found",applications:applications})
+        console.log(applications)
+        return res.json({message:'applications found',applications:applications})
+    }catch(err){
+        console.log(err)
+        return res.json({message:"Something went wrong"})
+    }
+}
 
+async function getAllRefApplications(req,res){
+    try{
+        const {wallet}=req.query
+        let resArr=[]
+        let applicationArr=[]
+        const links=await Links.findAll({where:{generatedBy:wallet,isActive:false},group:Links.jobId})
+        if(links==null||links?.length==0){
+            return res.json({message:'No candidates found'})
+        }
+        for(let i=0;i<links?.length;i++){
+            let application=await Applications.findOne({where:{ref:links[i]?.dataValues?.ref}})
+            console.log(application?.dataValues,links?.[i]?.dataValues)
+            if(application==undefined){
+                continue
+            }
+            const user=await Users.findOne({where:{walletId:application?.dataValues?.candidate}})
+            if(user==undefined){
+                continue
+            }
+            applicationArr?.push({...application?.dataValues,candidateData:user?.dataValues})
+        }
+        let currJob={
+            index:0,
+            id:applicationArr[0]?.jobId,
+            name:''
+        }
+        console.log(applicationArr)
+        for (let i=0;i<applicationArr?.length;i++){
+            console.log(currJob)
+            if(currJob.id!=applicationArr[i]?.jobId || currJob.name==''){
+                let job=await Jobs.findOne({where:{jobId:applicationArr[i]?.jobId}})
+                currJob.id=job?.dataValues?.jobId
+                if(currJob.name!='') currJob.index+=1;
+                currJob.name=job?.dataValues?.title
+                console.log(currJob)
+                resArr.push([])
+                resArr[currJob.index]?.push(currJob.name)
+            }
+            console.log(currJob)
+            resArr[currJob.index]?.push(applicationArr[i])
+            console.log(currJob,applicationArr[i])
+
+            console.log(resArr)
+        }
+        return res.json({message:'candidates found',candidates:resArr})
     }catch(err){
         console.log(err)
         return res.json({message:"Something went wrong"})
@@ -44,7 +96,8 @@ async function createApplication(req,res){
             candidate:candidate,
             skills:skills,
             rating:rating,
-            ref:ref
+            ref:ref,
+            refBy:link?.dataValues?.generatedBy
         })
         link.isActive=false
         await link.save()
@@ -58,5 +111,6 @@ async function createApplication(req,res){
 
 module.exports={
     getAllApplications,
+    getAllRefApplications,
     createApplication
 }

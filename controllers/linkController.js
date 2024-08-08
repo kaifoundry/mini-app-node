@@ -1,3 +1,4 @@
+const { Jobs } = require("../models/jobs")
 const { Links } = require("../models/link")
 
 async function createLink(req,res){
@@ -70,8 +71,46 @@ async function getAllLinks(req,res){
     }
 }
 
+async function getAllActiveLinks(req,res){
+    try{
+        const {wallet}=req.query
+        console.log(wallet)
+        let linkArr=[]
+        
+        const links=await Links.findAll({where:{generatedBy:wallet},group:Links.jobId})
+        if(links==null || !(links?.length>0)){
+            return res.json({message:"no links found"})
+        }
+        let currJob={
+            id:links?.[0]?.jobId,
+            name:'',
+            index:0
+        }
+        for(let i=0;i<links?.length;i++){
+            if(currJob.id!=links?.[i]?.jobId || currJob.name==''){
+                currJob.id=links?.[i]?.jobId
+                if(currJob.name!='') currJob.index+=1;
+                const job=await Jobs.findOne({where:{jobId:links?.[i]?.jobId}})
+                currJob.name=job?.title
+                linkArr.push([])
+                linkArr[currJob.index].push(currJob.name)
+            }
+            linkArr[currJob.index].push(links?.[i]?.dataValues)
+            console.log(currJob,links?.[i]?.dataValues)
+
+            console.log(linkArr)
+
+        }
+        return res.json({message:'links found',links:linkArr})
+    }catch(err){
+        console.log(err)
+        return res.json({message:"something went wrong"})
+    }
+}
+
 module.exports={
     createLink,
     getLink,
-    getAllLinks
+    getAllLinks,
+    getAllActiveLinks
 }

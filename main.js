@@ -1,4 +1,5 @@
 require("dotenv").config();
+const schedule=require('node-schedule')
 const fetch = require("node-fetch-commonjs");
 const crypto = require("crypto");
 global.crypto = crypto.webcrypto;
@@ -12,6 +13,7 @@ const User= require('./models/user')
 const applications=require('./models/application')
 const jobs=require('./models/jobs')
 const Link=require('./models/link')
+
 
 async function getJobsForBot(){
   try{
@@ -64,6 +66,7 @@ app.listen(PORT, async () => {
 
 
 const TelegramBot = require('node-telegram-bot-api');
+const { updateUser, updateUserRankings } = require("./controllers/userController");
 
 const token = '7339805053:AAHHlRS0imAHe8bB-b5oUxJUCnyiXTKm2HM';
 
@@ -164,3 +167,4 @@ Feel free to reach out if you need any assistance. Welcome aboard, and let's mak
   });
 
 });
+const job = schedule.scheduleJob('* */50 * * * *',updateUserRankings)

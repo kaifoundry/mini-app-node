@@ -35,5 +35,8 @@ const Jobs = sequelize.define("Job", {
     tags:{
         type:DataTypes.ARRAY(DataTypes.TEXT)
     },
+    isFeatured:{
+        type:DataTypes.BOOLEAN
+    }
 });
 module.exports = { Jobs };

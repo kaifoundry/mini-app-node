@@ -1,4 +1,4 @@
-const { DataTypes, ARRAY, ENUM } = require("sequelize");
+const { DataTypes, ARRAY, ENUM, INTEGER } = require("sequelize");
 const sequelize = require("../database"); // Ensure to configure the connection in this file
 
 const Users = sequelize.define("User", {
@@ -18,13 +18,16 @@ const Users = sequelize.define("User", {
         type:DataTypes.ARRAY(DataTypes.TEXT),
         defaultValue:[]
     },
-    // profile:{
-    //     type:DataTypes.TEXT,
-    //     allowNull:true
-    // },
+    profile:{
+        type:DataTypes.TEXT,
+        allowNull:true
+    },
     isAdmin:{
         type:DataTypes.BOOLEAN,
         allowNull:false
+    },
+    rank:{
+        type:DataTypes.INTEGER
     }
 });
 module.exports = { Users };

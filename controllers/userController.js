@@ -97,7 +97,7 @@ async function getTop10Users(req,res){
 
 async function updateUserRankings(req,res){
     try{
-        const users=await Users.findAll({})
+        const users=await Users.findAll({order:[['createdAt','ASC']]})
         if(users==null||users?.length==0){
             return
         }

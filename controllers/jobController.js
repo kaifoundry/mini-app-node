@@ -137,7 +137,7 @@ async function updateJob(req,res){
         job.jobReq=reqJob?.jobReq
         job.skills=reqJob?.skills
         job.tags=reqJob?.tags
-        job.isFeatured=req?.isFeatured
+        job.isFeatured=reqJob?.isFeatured
 
         await job.save()
 

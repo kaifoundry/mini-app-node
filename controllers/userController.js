@@ -83,7 +83,8 @@ async function getTop10Users(req,res){
             let userEl={
                 name:users[i]?.dataValues?.name,
                 rank:users[i]?.dataValues?.rank,
-                referrals:appCount
+                referrals:appCount,
+                wallet:users[i]?.dataValues?.walletId
             }
             console.log(userEl)
             userData.push(userEl)

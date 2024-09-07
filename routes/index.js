@@ -1,4 +1,4 @@
-const { createApplication, getAllApplications, getAllRefApplications } = require("../controllers/applicationController");
+const { createApplication, getAllApplications, getAllRefApplications, getRedeemableApplications, removeAllRedeemableApplications } = require("../controllers/applicationController");
 const { createJob, getJobDetails, getAllJobs, deleteJob, getAllFeaturedJobs, getAllUnFeaturedJobs, changeFeatureStatus, updateJob } = require("../controllers/jobController");
 const { createLink, getLink, getAllLinks, getAllActiveLinks } = require("../controllers/linkController");
 const { createUser, getUser, updateUser, getTop10Users } = require("../controllers/userController");
@@ -21,6 +21,8 @@ route.get('/getActiveLinks',getAllActiveLinks)
 route.post('/createApplication',createApplication)
 route.get('/getApplications',getAllApplications)
 route.get('/getRefApplications',getAllRefApplications)
+route.get('/getBounties',getRedeemableApplications)
+route.patch('/removeBounty',removeAllRedeemableApplications)
 
 //jobRoutes
 route.post('/createJobs',createJob)

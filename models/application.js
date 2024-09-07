@@ -19,6 +19,9 @@ const Applications = sequelize.define("Application", {
     },
     refBy:{
         type:DataTypes.TEXT
+    },
+    isRewardRedeemed:{
+        type:DataTypes.BOOLEAN
     }
 });
 module.exports = { Applications };

@@ -71,6 +71,40 @@ async function getAllRefApplications(req,res){
     }
 }
 
+async function getRedeemableApplications(req,res){
+    try{
+        const {wallet}=req.query
+        const links=await Links.findAll({where:{generatedBy:wallet,isActive:false}})
+        let count=0
+        for(let i=0;i<links?.length;i++){
+            let application=await Applications.findOne({where:{ref:links[i]?.dataValues?.ref}})
+            if(application.dataValues.rating>3 && !application.dataValues.isRewardRedeemed){
+                count+=1
+            }
+        }
+        return res.json({message:"redeemable bounties found",count:count})        
+    }catch(err){
+        console.log(err)
+        return res.json({message:"Something went wrong"})
+    }
+}
+
+async function removeAllRedeemableApplications(req,res){
+    try {
+        const {wallet}=req.query
+        const links=await Links.findAll({where:{generatedBy:wallet,isActive:false}})
+        for(let i=0;i<links?.length;i++){
+            let application=await Applications.findOne({where:{ref:links[i]?.dataValues?.ref}})
+            application.isRewardRedeemed = true
+            await application.save()
+        }
+        return res.json({message:"Bounties will be redeemed after transaction"})
+    } catch (err) {
+        console.log(err)
+        return res.json({message:"Something went wrong"}) 
+    }
+}
+
 async function createApplication(req,res){
     try{
         const {candidate,skills,ref}=req.body
@@ -97,7 +131,8 @@ async function createApplication(req,res){
             skills:skills,
             rating:rating,
             ref:ref,
-            refBy:link?.dataValues?.generatedBy
+            refBy:link?.dataValues?.generatedBy,
+            isRewardRedeemed:false
         })
         link.isActive=false
         await link.save()
@@ -112,5 +147,7 @@ async function createApplication(req,res){
 module.exports={
     getAllApplications,
     getAllRefApplications,
-    createApplication
+    createApplication,
+    getRedeemableApplications,
+    removeAllRedeemableApplications
 }

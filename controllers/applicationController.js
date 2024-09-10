@@ -50,7 +50,7 @@ async function getAllRefApplications(req,res){
         for (let i=0;i<applicationArr?.length;i++){
             console.log(currJob)
             if(currJob.id!=applicationArr[i]?.jobId || currJob.name==''){
-                let job=await Jobs.findOne({where:{jobId:applicationArr[i]?.jobId}})
+                let job=await Jobs.findOne({where:{id:applicationArr[i]?.jobId}})
                 currJob.id=job?.dataValues?.jobId
                 if(currJob.name!='') currJob.index+=1;
                 currJob.name=job?.dataValues?.title
@@ -77,7 +77,12 @@ async function getRedeemableApplications(req,res){
         const links=await Links.findAll({where:{generatedBy:wallet,isActive:false}})
         let count=0
         for(let i=0;i<links?.length;i++){
+            console.log(links[i]?.dataValues)
             let application=await Applications.findOne({where:{ref:links[i]?.dataValues?.ref}})
+            console.log("appication",application?.dataValues)
+            if(application?.dataValues==undefined){
+                continue
+            }
             if(application.dataValues.rating>3 && !application.dataValues.isRewardRedeemed){
                 count+=1
             }
@@ -95,6 +100,8 @@ async function removeAllRedeemableApplications(req,res){
         const links=await Links.findAll({where:{generatedBy:wallet,isActive:false}})
         for(let i=0;i<links?.length;i++){
             let application=await Applications.findOne({where:{ref:links[i]?.dataValues?.ref}})
+            if(application?.dataValues==undefined)
+                continue
             application.isRewardRedeemed = true
             await application.save()
         }

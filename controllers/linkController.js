@@ -90,7 +90,7 @@ async function getAllActiveLinks(req,res){
             if(currJob.id!=links?.[i]?.jobId || currJob.name==''){
                 currJob.id=links?.[i]?.jobId
                 if(currJob.name!='') currJob.index+=1;
-                const job=await Jobs.findOne({where:{jobId:links?.[i]?.jobId}})
+                const job=await Jobs.findOne({where:{id:links?.[i]?.jobId}})
                 currJob.name=job?.title
                 linkArr.push([])
                 linkArr[currJob.index].push(currJob.name)
